@@ -1,0 +1,117 @@
+---
+description: Phase E/F guidance — turning gap analysis into a sequenced Architecture Roadmap with named Transition Architectures, horizon-banded work packages, and a clear Phase F handoff. Applies when working in ea-practice/, transformation/, or any roadmap artifact.
+alwaysApply: false
+globs: "{ea-practice,transformation}/**"
+---
+
+# Architecture Roadmap (ADM Phase E/F)
+
+The roadmap is the bridge between **Gap Analysis (Phase E)** and **Migration Planning (Phase F)**. It answers: *in what order, and in what groups of work, do we close the identified gaps?*
+
+A roadmap without Transition Architectures is a wish list. A Transition Architecture without a roadmap is an academic exercise. Both are required for a gap that cannot be closed in one step.
+
+## Core concepts
+
+### Transition Architecture
+
+A Transition Architecture is a **named, valid intermediate state** between the Baseline Architecture and the Target Architecture. It must be:
+- **Stable** — the system can operate in this state indefinitely if needed; it is not a half-built state.
+- **Valuable** — it delivers some of the target value, not just structural groundwork.
+- **Named** — use the convention `TA-NN-<kebab-slug>` (e.g. `TA-01-parallel-run`, `TA-02-new-platform-live-legacy-read-only`, `TA-03-full-target`).
+
+**Not every gap needs a Transition Architecture.** Only propose one when:
+- The gap is too large to close in a single delivery (typically more than one team, more than one quarter)
+- There are hard dependencies that prevent closing all aspects simultaneously
+- Risk mitigation requires an intermediate stable state (e.g. a parallel run period)
+
+### Horizons
+
+Horizons are **time bands**, not delivery dates. They communicate priority and sequencing, not contractual commitments.
+
+| Horizon | Typical band | Characteristics |
+|---------|-------------|-----------------|
+| **H0** | Now → ~6 months | High confidence, well-scoped, decisions made, resources committed |
+| **H1** | ~6 → 18 months | Direction clear, dependencies identified, scoping in progress |
+| **H2** | ~18 months+ | Strategic intent established, details to be resolved in a future ADM cycle |
+
+H0 work packages should be fully sequenced and scoped. H1 and H2 are indicative — they will be refined as H0 delivers and Phase H feeds the next cycle.
+
+### Work packages
+
+A work package is the unit of delivery within a horizon. Each work package:
+- Has a short name and a one-sentence scope statement
+- Closes one or more named gaps from the Gap Analysis
+- Has at most one team/programme responsible for it (avoid shared ownership)
+- Is linked to the Transition Architecture it produces or contributes to
+
+Work packages within a horizon are not necessarily sequential — they may run in parallel if there are no dependencies between them. Dependencies between packages must be named.
+
+## What good looks like
+
+**Gaps drive packages, not the other way round.**
+Start from the gap list (Phase E Gap Analysis), not from a list of projects. Every work package must close a named gap. A work package with no gap justification is a project, not architecture.
+
+**Dependencies are explicit.**
+If Work Package B cannot start until Work Package A completes, name the dependency. "These packages are roughly in order" is not dependency management.
+
+**Transition Architectures are described, not just named.**
+Each TA entry states: what is live, what is not yet live, what data migration state it represents, and what operational capabilities are available. "TA-01 — partial migration" is not a description.
+
+**Phase H feed is planned.**
+State what metrics or events will trigger a review of the roadmap. Roadmaps become stale when they are not connected to a change management process. Name the review trigger (e.g. "TA-01 achieved", "H0 delivered", "business priority change").
+
+**The decommissioning plan is part of the roadmap.**
+For replacement and consolidation scenarios, the roadmap must show when legacy systems are retired — not just when new ones go live. A roadmap that ends with two systems in production is not complete.
+
+## Roadmap artifact structure
+
+Default location: `ea-practice/ArchitectureRoadmap.md` or `transformation/<programme>/Roadmap.md` (check `AGENTS.md`).
+
+Recommended sections:
+
+```markdown
+## Summary
+One paragraph: what this roadmap covers, the target it works toward, and the current status.
+
+## Baseline → Target → Gap summary
+Brief reference to the Gap Analysis that drives this roadmap.
+
+## Transition Architectures
+### TA-01 — <name>
+Description of the state, what is live, what is not yet live.
+
+## Roadmap
+
+### H0 — <Date range>
+| Work package | Closes gap(s) | Produces | Dependencies | Owner |
+|…|
+
+### H1 — <Date range>
+| … |
+
+### H2 — Strategic intent
+| … |
+
+## Decommissioning schedule
+| System | Decommission trigger | Target date | Owner |
+
+## Review triggers
+| Trigger | Action |
+```
+
+## Phase E → Phase F handoff
+
+Phase E produces the roadmap structure and Transition Architectures. Phase F adds:
+- Detailed sequencing within H0 (sprint/quarter level)
+- Data migration plans per work package
+- Cutover strategies (big-bang vs. parallel vs. phased)
+- Resource and cost estimates
+- Risk register entries per work package
+
+Do not put Phase F level detail into the roadmap artifact — reference it from the relevant work package implementation plans.
+
+## Boundaries
+
+- Gap identification belongs in Phase E artifacts (Gap Analysis)
+- Detailed migration/cutover planning belongs in Phase F artifacts
+- The roadmap is the summary bridge — it links gaps to packages to timelines, not the other way round

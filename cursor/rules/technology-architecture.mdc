@@ -1,0 +1,86 @@
+---
+description: Guidance for Phase D (Technology) artifacts — SBB selection justified against ABBs, ADRs for platform decisions, integration infrastructure, security and identity baseline, and operational qualities.
+alwaysApply: false
+globs: "TechnologyArchitecture/**"
+---
+
+# Technology Architecture (ADM Phase D — Technology)
+
+You are working in **Phase D – Technology**. This domain covers platform choices, hosting, runtime, networking, security, identity, integration infrastructure, observability, and ADRs. It is the home of Solution Building Block (SBB) decisions — but SBBs must always be justified against the ABBs defined in Phase B and C.
+
+## Anchor artifacts
+
+Read `AGENTS.md` for actual paths. Default locations:
+
+- `TechnologyArchitecture/ADR-NNNN-*.md` — Architecture Decision Records. Platform-level decisions go here. See `adr-and-decisions.mdc` for format and trigger rules.
+- `TechnologyArchitecture/IntegrationRoadmap.md` — agreed integration patterns, interface catalogue, and integration technology decisions. Align with it; propose changes via ADR rather than inline overrides.
+- `principles.md` — cite by P-NN when a platform or infrastructure choice rests on or conflicts with a principle.
+- `ea-practice/togaf-decision-stages.md` — reference for how Technology decisions fit into the broader ADM scenario.
+
+If these files don't exist in your repo, propose creating them.
+
+## What good looks like
+
+**SBB choices are justified against ABBs.**
+Never name a product or platform without first naming the capability it fulfils and the qualities required of it. "We will use [Product X]" is incomplete. "We need an API management capability with rate limiting, mutual TLS, and developer portal; we will use [Product X] because it satisfies these requirements and aligns with our existing cloud baseline" is a Technology Architecture statement.
+
+**Operational qualities are stated, not assumed.**
+For every platform or runtime decision, state the qualities that actually matter for this decision:
+- Availability target and SLA
+- RPO / RTO requirements
+- Security zone and data residency constraints
+- Observability requirements (metrics, logs, traces, health endpoints)
+- Scalability model (vertical / horizontal / serverless)
+
+Don't list all of them by default — list the ones that constrain or differentiate the options.
+
+**Reuse before introducing new technology.**
+Before proposing a new platform component, check the existing technology baseline (check `AGENTS.md` or ask the user for the baseline inventory). Introducing a new technology where an existing approved one would suffice requires explicit justification. Reference the relevant principle (typically *Reuse before buy, buy before build*).
+
+**Integration patterns are chosen and named.**
+Every integration involves a pattern choice. Name it explicitly in the artifact and reference (or propose an entry in) the integration catalogue:
+- Synchronous API (REST / GraphQL / gRPC)
+- Asynchronous messaging (queue, topic, event stream)
+- Batch / file transfer
+- Data replication / CDC
+- Data virtualisation
+
+Pattern choice should be justified by latency requirements, coupling tolerance, and data volume — not by what the team happens to know.
+
+**Security and identity are not afterthoughts.**
+When introducing a new application or platform integration, the authentication and authorisation model must be stated in Phase D:
+- What identity provider is used?
+- What protocol (OIDC, SAML, mTLS, API key)?
+- What is the token/session lifecycle?
+- How does this align with the existing identity baseline?
+
+If a new identity pattern is required, it warrants a Technology ADR.
+
+**Cost and lifecycle are visible.**
+For significant platform decisions, state: licensing model, estimated environment count (dev/test/prod), and any decommission or exit considerations. A platform decision with no exit strategy is a lock-in risk.
+
+## ADR discipline
+
+Write an ADR (see `adr-and-decisions.mdc`) when a decision is platform-level, reusable, and architecturally significant. The ADR format is the canonical record — not a paragraph buried in a design document.
+
+ADR status lifecycle: `Proposed (Draft)` → `Accepted` → `Superseded by ADR-MMMM`.
+
+Number ADRs sequentially across all domains (`ADR-NNNN-<kebab-slug>.md`). The counter is global — check the highest existing NNNN before assigning a new number.
+
+## Boundaries
+
+- Application capability decisions and portfolio classification → `ApplicationArchitecture/`
+- Canonical data model, system of record, data ownership → `DataArchitecture/`
+- Business capability ownership and operating model → `BusinessArchitecture/`
+
+The integration *transport and platform* lives here. The integration *data contract and canonical model* lives in DataArchitecture. Cross-link rather than duplicate.
+
+## ADR triggers in Phase D
+
+Offer a Technology ADR (see `adr-and-decisions.mdc`) when:
+- A new cloud platform, PaaS service, or runtime is being adopted
+- An integration platform or pattern is being standardised
+- An identity or security baseline is being established or changed
+- A hosting or infrastructure model is being decided (cloud-native / lift-and-shift / hybrid)
+- A vendor or product is being selected for a platform-level ABB
+- An existing technology is being decommissioned or replaced at platform level

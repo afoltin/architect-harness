@@ -1,0 +1,161 @@
+---
+description: RFP and presales pursuit context — extends togaf-core for time-boxed proposal delivery. Covers Architecture Intent as single source of truth, RFP phase-to-ADM mapping, C4 diagram conventions, pursuit governance, and failure patterns to actively prevent.
+alwaysApply: false
+globs: "{pursuits,presales,rfp}/**"
+---
+
+# RFP / Presales Pursuit Context
+
+You are working in a **presales pursuit**. The EA Tooling Kit's full governance model applies here, but adapted for a time-boxed, commercially-driven context. The goal is not an architecture that will be governed for years — it is a credible, traceable, winning proposal that can be delivered.
+
+This rule extends `togaf-core.mdc`. All TOGAF vocabulary and behavioural rules remain in force. Additional rules specific to presales work are below.
+
+Read `ea-practice/rfp-pursuit-guide.md` for the Architecture Intent document format, C4 conventions, and the standard pursuit folder structure.
+
+---
+
+## RFP phase → TOGAF ADM mapping
+
+Presales phases are not the ADM, but they draw from it. Understanding the mapping prevents the most common failure — treating architecture as a Phase 2 activity rather than a continuous thread from Phase 0.
+
+| RFP Phase | ADM Equivalent | Key output |
+|-----------|---------------|------------|
+| Phase 0 — Qualify | Pre-ADM (commercial gate) | Bid/No-Bid Decision Record; go/no-go before architecture work begins |
+| Phase 1 — Discovery | Phase A — Architecture Vision | Client Context Brief; NFR Catalogue; Solution Hypothesis; Architecture Intent |
+| Phase 2 — Solution Design | Phases B/C/D | Capability Map; SAD; ADRs; Fit/Gap Assessment; NFR Response Matrix |
+| Phase 3 — Delivery Model | Phases E/F (abbreviated) | Phased Roadmap; Risk Register; Assumptions & Exclusions |
+| Phase 4 — Commercial | Outside ADM | Executive Summary; Compliance Matrix; Proposal assembly |
+| Phase 5 — Presentation | Outside ADM | Orals deck; Clarification responses |
+
+The most important transition is **Phase 1 → Phase 2**: the Architecture Intent document must be written and agreed before solution design begins. Everything in Phases 2–5 derives from it.
+
+---
+
+## The Architecture Intent — the single source of truth
+
+The Architecture Intent is a one-to-two page document produced at the Phase 1/2 boundary. It is not a full SAD — it is the governing narrative that all workstreams read before producing their artifacts.
+
+**It must exist before:**
+- Options Analysis is written
+- Effort estimation begins
+- Executive Summary is drafted
+
+**It contains:**
+1. Problem statement — what the client is actually trying to solve (one paragraph)
+2. Proposed capability approach — what capabilities the solution delivers, at ABB level
+3. Key architectural decisions already made — with brief rationale (not full ADRs yet)
+4. Assumed principles — which of the client's or engagement's principles govern this solution
+5. Integration stance — how the solution connects to the existing estate (approach, not detail)
+6. Explicit out-of-scope — what this solution does not address
+
+Without this document, the failure pattern described in `ea-practice/rfp-pursuit-guide.md` is almost inevitable: executive summary says one thing, architecture diagrams say another, estimation assumes a third.
+
+---
+
+## Vocabulary additions for RFP context
+
+| Term | Meaning |
+|------|---------|
+| **Architecture Intent** | The one-to-two page governing narrative; single source of truth for the pursuit |
+| **Pursuit** | A single RFP opportunity being responded to |
+| **Pursuit lead** | The Principal or Director accountable for quality and coherence across all workstreams |
+| **SAD** | Solution Architecture Document — the full reference architecture for the proposed solution |
+| **NFR** | Non-Functional Requirement — performance, availability, security, compliance, scalability, etc. |
+| **NFR Response Matrix** | How the proposed architecture addresses each NFR — traceability artifact |
+| **Fit/Gap Assessment** | Requirement-level mapping: Met / Partial / Gap / Out-of-scope |
+| **Compliance Matrix** | Maps every RFP requirement to the section of the proposal that responds to it |
+| **Bid/No-Bid Decision Record** | Go/no-go decision with scoring against qualification criteria |
+| **Open Questions Log** | Ambiguities that block architecture decisions; tracked until client responds |
+| **Clarification Q&A Log** | Submitted clarification questions and client responses (living document) |
+| **Assumptions & Exclusions** | Explicit scope boundary — what is assumed true and what is out of scope |
+| **C4 model** | Context (C1) / Container (C2) / Component (C3) — preferred diagramming convention |
+
+---
+
+## C4 diagram conventions
+
+Architecture diagrams in proposals follow the C4 model. See `ea-practice/rfp-pursuit-guide.md` for full guidance.
+
+**Which levels to produce per proposal:**
+
+| Level | Required? | Content |
+|-------|-----------|---------|
+| C1 — System Context | Always | The proposed system and its external actors (users, external systems, integrations) |
+| C2 — Container | Almost always | Major containers: applications, services, databases, messaging systems |
+| C3 — Component | Selective | Internal components of a specific container — only when the RFP requires it or a key differentiator sits here |
+
+**Rules:**
+- Every diagram has a title, a legend, and a description of what it shows and what it intentionally omits.
+- External systems are clearly distinguished from systems within scope.
+- Diagram boundaries map to the SAD sections — no diagram should be unexplained by prose, no SAD section should be unrepresented in a diagram.
+- Technology labels on containers and components match exactly what is named in the Technology Selection section.
+
+---
+
+## Behavioural rules specific to RFP context
+
+**1. Architecture Intent before everything.**
+If the Architecture Intent document does not yet exist, the first task in any Phase 2 session is to produce it. Do not proceed to options analysis, SAD, or effort estimation without it.
+
+**2. NFRs are architecture drivers — trace them.**
+Every significant architecture decision in the SAD must be traceable to at least one NFR or functional requirement. If you cannot trace it, either the requirement is missing from the NFR Catalogue or the decision is speculative. Name it explicitly.
+
+**3. Fit/Gap is honest, not optimistic.**
+A fit/gap assessment that marks everything as "Met" without qualification will be challenged in the orals. Use "Partial" and "Gap" where they apply. A known gap with a mitigation plan is more credible than a superficial "Met".
+
+**4. ADRs are written during the pursuit, not after.**
+Key decisions made during solution design go into ADRs immediately. When a client asks "why did you choose X over Y?" in the orals, the ADR is the answer. Decisions made verbally and never recorded cannot be defended consistently across the team.
+
+**5. Assumptions & Exclusions protect scope.**
+The Assumptions & Exclusions document is commercial protection. Every assumption that is not validated by the client at proposal stage is a scope-creep risk in delivery. Write it carefully; prefer to over-document.
+
+**6. EA lens applies even under time pressure.**
+Every proposal must answer: where does this solution sit in the client's broader landscape? How does it align with their technology standards? What is the governance model post-delivery? These are the questions Director and CTO-level reviewers ask. `togaf-core.mdc` rules 3, 4, 5, and 6 apply fully.
+
+---
+
+## Pursuit governance model
+
+| Role | Accountability |
+|------|---------------|
+| **Pursuit Lead** (Principal / Director) | Overall quality, coherence, commercial sign-off — owns the Architecture Intent |
+| **Solution Architect** | SAD, diagrams, ADRs, Fit/Gap, Options Analysis |
+| **Enterprise Architect** | EA alignment, capability mapping, standards compliance, long-term governance model |
+| **Delivery Lead** | Roadmap, estimation, RACI, Risk Register |
+| **Commercial Lead** | Pricing model, contract structure |
+| **Bid Manager** | Compliance Matrix, document assembly, submission logistics |
+
+In smaller teams, one person may hold multiple roles. The accountability split — especially between SA and EA — must still be explicit. The SA answers *how*; the EA answers *where this sits in the broader landscape*.
+
+---
+
+## Failure patterns to actively prevent
+
+When working in a pursuit, watch for and name these patterns if they appear:
+
+**Architecture written last.** If effort estimation has started and the Architecture Intent does not exist, stop and write it. Everything downstream will misalign.
+
+**Fit/gap as a checkbox.** An honest fit/gap with acknowledged gaps and mitigations is more credible than a superficial clean sheet. Flag it if the assessment is being optimised for appearance rather than accuracy.
+
+**No single source of truth.** If the executive summary narrative does not match the Architecture Intent, resolve the conflict before progressing. Do not let divergence accumulate.
+
+**ADRs skipped under time pressure.** Offer to capture qualifying decisions immediately, not "later". The orals conversation will expose undocumented decisions.
+
+**Assumptions buried.** If assumptions are embedded in estimation or architecture prose rather than in a dedicated Assumptions & Exclusions document, surface them and propose moving them.
+
+---
+
+## Skills available for pursuit work
+
+Invoke these skills for phase-specific workflows:
+
+| Skill | Pursuit phase |
+|-------|--------------|
+| `rfp-qualifier` | Phase 0 — Bid/No-Bid scoring, requirements triage, Open Questions Log |
+| `rfp-discovery-to-design` | Phases 1–2 — Client Context Brief, NFR Catalogue, Architecture Intent, SAD, Fit/Gap |
+| `rfp-assembler` | Phases 3–4 — Risk Register, Compliance Matrix, Executive Summary, Assumptions & Exclusions |
+| `adr-generator` | Phase 2 — Capture key solution decisions as ADRs |
+| `principles-review` | Phase 2 — Check proposed architecture against principles |
+| `ea-standards` | Phase 2 — Review SAD and Architecture Intent before submission |
+| `roadmap-planner` | Phase 3 — Produce the phased delivery roadmap from Phase 2 gap analysis |
+| `presentation-skills` | Phase 5 — Build the orals deck |

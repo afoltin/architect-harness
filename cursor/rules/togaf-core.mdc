@@ -1,0 +1,112 @@
+---
+description: Core TOGAF working stance — vocabulary, ADM phases, structured-output expectation, and behavioural rules. Applies to all architecture artifacts in this repository.
+alwaysApply: true
+---
+
+# TOGAF Working Stance
+
+This repository is a working Enterprise Architecture organised along TOGAF lines. Use TOGAF as a **thinking tool and shared vocabulary** — not as a full ADM process to enforce ceremony around. Be precise, be traceable, be light.
+
+## Repository structure
+
+Folder-to-domain mapping is defined in `AGENTS.md` at the repo root. Always read it before producing architecture artifacts. If `AGENTS.md` is absent, ask the user which folder maps to which TOGAF domain before writing.
+
+Default mapping:
+
+| Folder | TOGAF domain / ADM phase |
+|--------|--------------------------|
+| `BusinessArchitecture/` | Phase B — Business |
+| `ApplicationArchitecture/` | Phase C — Applications |
+| `DataArchitecture/` | Phase C — Data |
+| `TechnologyArchitecture/` | Phase D — Technology (ADRs live here by default) |
+| `ea-practice/` | EA operating layer (action items, topics, decision stages) |
+| `templates/` | Reusable blank templates |
+| `journal/` | Daily architecture working log |
+| `process/` | Meeting and conversation notes |
+| `transformation/` | Cross-cutting transformation programmes |
+| `Glossary.md` | Authoritative terms — extend it; never invent synonyms |
+| `principles.md` | Active architecture principles — cite by P-NN ID |
+
+To customise this layout for your organisation, see `CUSTOMISE.md`.
+
+## Vocabulary to use consistently
+
+| Term | Meaning |
+|------|---------|
+| **ABB** | Architecture Building Block — a vendor-neutral capability or pattern |
+| **SBB** | Solution Building Block — a concrete product, component, or service |
+| **Architecture Vision** | Phase A output: scope, stakeholders, value case, Statement of Architecture Work |
+| **Baseline Architecture** | Current state, documented |
+| **Target Architecture** | Desired future state |
+| **Transition Architecture** | A named, valid intermediate state between Baseline and Target |
+| **Gap Analysis** | Explicit diff between Baseline and Target; the input to Phase E |
+| **Architecture Principles** | Named, ID'd rules that govern decisions (from `principles.md`) |
+| **Architecture Requirements** | Constrained requirements flowing into Phase B/C/D work |
+| **Architecture Contract** | The agreement between the architecture team and the delivery team (Phase G) |
+| **Capability** | A business ability, independent of the application or technology that delivers it |
+| **Value Stream** | End-to-end flow of activities that delivers value to a stakeholder |
+| **Stakeholder** | Anyone with a concern about the architecture outcome |
+| **Concern** | A stakeholder's specific interest or worry — the architecture must address it or explicitly accept it |
+
+## Structured-output expectation
+
+When producing or substantially editing any architecture artifact — anything in the four domain folders, `transformation/`, `ea-practice/`, `process/`, or any file matching `*Architecture*.md` — open with:
+
+```
+> **ADM phase:** <A | B | C-App | C-Data | D | E | F | G | H>
+> **Domain:** <Business | Application | Data | Technology | cross-cutting>
+> **Stakeholders:** <named roles or groups>
+> **Decision class (per Phase H):** <Simplification | Incremental | Re-architecting>
+```
+
+Do **not** add this header to `journal/` entries — the journal has its own format.
+
+For replacement / consolidation / integration / greenfield scenarios, follow the ADM emphasis in `ea-practice/togaf-decision-stages.md` rather than re-deriving it.
+
+## Behavioural rules
+
+**1. Be light, not ceremonial.**
+Do not fabricate full TOGAF deliverables (full ADD, Requirements Catalogue, Compliance Assessment) unless explicitly asked. A well-structured markdown document with the header above and the relevant sections is sufficient. Completeness over ceremony.
+
+**2. Name gaps explicitly.**
+When proposing a Target state, always state: (a) what the Baseline is, (b) what the Gap is, and (c) at least one Transition Architecture if the gap cannot be closed in a single step. Vague "we need to improve" statements are not gap analysis.
+
+**3. Distinguish ABB from SBB — always.**
+Define the capability need (ABB) before naming a product or vendor (SBB). "We need an API gateway with mutual TLS and rate limiting" before "we will use Azure API Management". Never let a vendor name substitute for a capability description.
+
+**4. Surface principles when they apply.**
+When a recommendation rests on an architecture principle, cite it inline: *per P-03 Reuse before invent*. When a recommendation conflicts with a principle, name the conflict explicitly and explain the deviation — do not ignore it. If `principles.md` does not exist, recommend creating it from `ea-practice/principles-template.md`. If a genuinely new principle emerges from the work, propose adding it with status `Proposed`.
+
+**5. Trace every choice to a business driver.**
+Every architectural recommendation must link back to a business driver, a named business capability, or a stated stakeholder concern. Architecture floating free of business context is overhead. If you cannot make the link, flag it as a gap rather than proceeding.
+
+**6. Stakeholder concerns are explicit.**
+Concerns are not implied by job title. Name the stakeholder, name their concern, and show how the architecture addresses or accepts the trade-off. This is especially important in Phase B.
+
+**7. Ask which ADM phase before writing.**
+The centre of gravity of the work changes per phase. Before producing a significant artifact, confirm which phase the user is operating in. Use `ea-practice/togaf-decision-stages.md` to determine appropriate depth and emphasis.
+
+**8. Decisions get captured.**
+Architecturally significant decisions with real trade-offs become ADRs. See `adr-and-decisions.mdc` for trigger criteria and format. Offer proactively; ask once; draft end-to-end if the user says yes.
+
+## What "done" looks like per phase
+
+| Phase | Minimum viable artifact |
+|-------|------------------------|
+| A — Vision | Scope, stakeholders + concerns, value case, Statement of Architecture Work |
+| B — Business | Capability map delta, value stream(s) affected, operating model impact, gaps named |
+| C — Applications | Fit-gap against current estate, ABB→SBB mapping, integration points named |
+| C — Data | Canonical entities affected, system of record, ownership, migration/mastering approach |
+| D — Technology | SBB choices with ABB justification, ADR(s) for platform decisions, operational qualities stated |
+| E — Opportunities | Gap → work package mapping, Transition Architecture(s) named, build/buy/SaaS framing |
+| F — Migration | Sequenced roadmap, cutover/migration plan, decommissioning scope |
+| G — Governance | Architecture Contract, compliance checkpoints |
+| H — Change Mgmt | Change classification (Simplification / Incremental / Re-architecting), RFC or new cycle triggered |
+
+## See also
+
+- `adr-and-decisions.mdc` — when and how to write ADRs (all domains)
+- `ea-practice/togaf-decision-stages.md` — ADM emphasis per scenario
+- `ea-practice/principles-template.md` — starter principles file
+- `AGENTS.md` — repo layout and path configuration
+- `CUSTOMISE.md` — how to adapt this kit to your organisation

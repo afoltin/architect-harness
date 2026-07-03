@@ -1,0 +1,89 @@
+---
+description: Lifecycle and citation rules for Architecture Principles — how principles are proposed, approved, cited, challenged, and superseded. Governs principles.md across all architecture work.
+alwaysApply: true
+---
+
+# Architecture Principles Governance
+
+Architecture principles are only useful if they are **consistently cited, honestly surfaced when conflicted, and actively maintained**. A principles file written once and never referenced is not governance — it is wallpaper.
+
+This rule governs the full lifecycle of `principles.md` (path from `AGENTS.md`, default: `principles.md`).
+
+## Principle structure
+
+Every principle in `principles.md` has:
+
+| Field | Content |
+|-------|---------|
+| **ID** | `P-NN` — sequential, never reused even after supersession |
+| **Name** | Short imperative phrase (e.g. *Reuse before buy, buy before build*) |
+| **Rationale** | Why this principle exists — the problem it prevents or the value it protects |
+| **Implications** | Concrete consequences for architecture and delivery decisions — what changes if you follow this |
+| **Status** | `Proposed` / `Active` / `Superseded by P-NN (YYYY-MM-DD)` |
+| **Owner** | Role or individual accountable for this principle |
+
+IDs are stable and permanent. Once P-07 is assigned, it is always P-07 — even if superseded. Do not renumber.
+
+## Lifecycle
+
+```
+Proposed → Active → Superseded
+```
+
+**Proposed:** A candidate principle. Surfaced by an ADR, a board discussion, or an architectural review. Added to `principles.md` with status `Proposed` and a note stating the driver (e.g. "Surfaced in ADR-0012"). Can be cited as `P-NN (Name) [Proposed]` but carries less weight than Active principles. Requires Architecture Board approval to move to Active.
+
+**Active:** Approved by the Architecture Board. Carries full governance weight. All ADRs must check Active principles in their Principles field. Conflicts with Active principles must be named and justified, not ignored.
+
+**Superseded:** Replaced by a newer principle or retired as no longer relevant. Status updated to `Superseded by P-NN (YYYY-MM-DD)` with a brief reason. The original text is preserved — do not delete superseded entries. New decisions should not cite superseded principles as justification; if they do, flag it.
+
+## How to cite a principle
+
+Inline citation format: *per P-NN Name* — e.g. *per P-02 Reuse before buy, buy before build*.
+
+Use this format:
+- In ADR **Principles** field: list all relevant P-NN IDs
+- In architecture artifact prose: cite inline when a recommendation rests on a principle
+- In review comments: cite when flagging a recommendation that conflicts with a principle
+
+Do not paraphrase. Use the exact principle name from `principles.md` so the reference is unambiguous.
+
+## How to propose a new principle
+
+A new principle is warranted when a significant architectural decision reveals a rule that should apply broadly — not just to this decision. The test: *would a different team, facing a similar choice in 18 months, benefit from knowing this?*
+
+Steps:
+1. Add to `principles.md` with status `Proposed`, next available `P-NN` ID, and a note: `Driver: ADR-NNNN` or `Driver: [document/discussion that surfaced this]`.
+2. Populate all fields — rationale and implications are especially important; a principle without implications is a platitude.
+3. Bring to the Architecture Board for review at the next scheduled session.
+4. If approved: update status to `Active`, record the date.
+5. If rejected: update status to `Proposed (rejected)` with a brief reason, or remove it — the board decides.
+
+Do not silently add principles with `Active` status. The board approval step is the governance gate.
+
+## How to handle conflicts
+
+When a recommendation conflicts with an Active principle:
+
+1. **Name the conflict explicitly.** In the ADR or document, state: *"This decision conflicts with P-NN (Name) because [specific reason]."*
+2. **Justify the deviation.** State why the decision is still correct despite the conflict — e.g. regulatory constraint, time-bounded exception, cost threshold exceeded.
+3. **Escalate material conflicts.** If the conflict is significant (e.g. the decision would set a precedent that could affect many future choices), bring it to the Architecture Board. The board may approve the exception, update the principle, or reject the decision.
+4. **Never silently ignore a conflict.** An ADR that omits a conflicting principle and later turns out to have violated it is a governance failure.
+
+## Anti-patterns
+
+**Principles that are too granular.** If a principle only applies to one specific technology choice, it should be an ADR, not a principle. Principles are broad; ADRs are specific.
+
+**Principles as rubber stamps.** Citing a principle without engaging with its implications ("this satisfies P-02 because we're reusing an existing tool") is not a citation — it is a formality. The implication must be addressed.
+
+**The immovable principle.** Principles must be challengeable. If every deviation triggers a conflict and no principle is ever updated, the principles are not governing — they are blocking. Expect Active principles to be revised every 1–2 years.
+
+**Principles invented to justify a decision already made.** If a new principle conveniently justifies a specific choice under active discussion, it is probably an ADR trigger, not a principle. Watch for this in board sessions.
+
+## Review cadence
+
+Architecture principles should be reviewed:
+- **Annually** — a standing review against the current technology and business context
+- **On major ADM cycles** — when a Re-architecting change is being planned
+- **When three or more conflicts with the same principle arise in a 6-month period** — a signal the principle is too restrictive, outdated, or poorly worded
+
+The review produces: confirmed Active principles (no change), updated principles (reworded with reason), newly Proposed principles from recent ADRs, and Superseded principles no longer relevant.

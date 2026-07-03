@@ -1,0 +1,75 @@
+---
+description: Guidance for Phase C (Data) artifacts — canonical model, system of record, data ownership, classification, mastering patterns, and data quality. The centre of gravity for integration and consolidation scenarios.
+alwaysApply: false
+globs: "DataArchitecture/**"
+---
+
+# Data Architecture (ADM Phase C — Data)
+
+You are working in **Phase C – Data**. This is the centre of gravity for integration scenarios and the hardest part of consolidation scenarios — master data reconciliation across silos rarely fails for technical reasons; it fails because ownership and semantics were not resolved in this phase.
+
+## Anchor artifacts
+
+Read `AGENTS.md` for actual paths. Default locations:
+
+- `DataArchitecture/CanonicalDataModel.md` — the authoritative shared data model. Every integration and migration references it. If it doesn't exist, propose creating it before designing integration flows.
+- `DataArchitecture/DataOwnershipRegister.md` — which system is the system of record for which entity, and who is the business owner. If it doesn't exist, propose it.
+- `Glossary.md` — authoritative terms. Extend it when new data entities or domain terms are introduced; do not invent synonyms inline.
+- `principles.md` — cite P-NN when a data ownership or canonical model decision rests on or conflicts with a principle.
+
+## What good looks like
+
+**Canonical model first.**
+Before designing any integration, name the canonical entities involved and reference their definitions in `DataArchitecture/CanonicalDataModel.md`. Integration that bypasses the canonical model — mapping directly between two proprietary schemas — creates a point-to-point dependency that compounds with every new integration. Name it as technical debt if it's an unavoidable short-term choice.
+
+**System of record is unambiguous.**
+Every canonical entity has exactly one system of record. Ambiguity about which system owns an entity is a finding, not an assumption. State it explicitly: "Customer is mastered in [System X]. All other systems are consumers." If two systems both claim ownership, that conflict must be resolved in this phase — not in implementation.
+
+**Ownership has two dimensions.**
+Distinguish:
+- **Business owner** — the role accountable for data quality and definition (e.g. "Head of Sales Operations owns Customer data")
+- **Technical custodian** — the system or team that maintains the record (e.g. "CRM team owns the Customer entity in the CRM system")
+
+Both must be named for critical entities. Missing one is incomplete.
+
+**Classification is present for sensitive data.**
+When an entity carries personal, financial, health, or regulated data, state at the first appearance:
+- Sensitivity classification (e.g. Personal / Confidential / Restricted)
+- Regulatory scope (e.g. GDPR personal data, PCI-DSS payment data)
+- Retention and archival rules
+
+Do not defer this to a compliance review. Retrofitting classification is always more expensive.
+
+**Data quality dimensions are named for critical entities.**
+For high-value entities (those that drive business decisions or financial outcomes), name the relevant quality dimensions: completeness, accuracy, consistency, timeliness, uniqueness. A canonical model entry that doesn't mention quality expectations is a source of future disputes.
+
+**Mastering pattern is chosen, not assumed.**
+When multiple systems hold a version of the same entity, the mastering approach must be explicitly chosen and justified:
+- **Hub** — a central MDM system is the single master; all others sync from it
+- **Registry** — a cross-reference index points to authoritative fragments held in source systems
+- **Coexistence** — multiple systems maintain records; synchronisation rules define winner logic
+
+"We'll figure it out in integration" is not a mastering strategy.
+
+## Patterns to reach for
+
+- **Canonical/contract-first integration** — define the canonical message schema before designing the transport. The *what* (data model) is Phase C-Data; the *how* (API, broker, iPaaS, file) is Phase D.
+- **Event-carried state transfer vs reference data lookup** — decide per flow based on latency, volume, and coupling tolerance. Document the decision; don't let it be an implementation accident.
+- **Golden source vs derived** — every data element in an integration is either sourced directly from the system of record or derived from it. Name which is which.
+
+## Boundaries
+
+- Application that produces or consumes the data → `ApplicationArchitecture/`
+- Transport mechanism, integration platform, API gateway → `TechnologyArchitecture/`
+- Business rules that govern data meaning or ownership → `BusinessArchitecture/`
+
+The canonical data model and system-of-record assignments live here. The pipes that move data live in Technology.
+
+## ADR triggers in Phase C — Data
+
+Offer a Data ADR (see `adr-and-decisions.mdc`) when:
+- A system of record is being assigned or changed for a canonical entity
+- A master data management approach is being chosen (hub / registry / coexistence)
+- A significant canonical entity is being redefined or merged
+- Data ownership is being reassigned across systems
+- A data retention or archival policy is being established for a regulated entity class

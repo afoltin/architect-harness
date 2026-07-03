@@ -1,0 +1,126 @@
+---
+description: Trigger and format rules for Architecture Decision Records across all TOGAF domains. Proactively offer ADR capture when a qualifying decision is reached — Business, Application, Data, or Technology.
+alwaysApply: true
+globs: "**/ADR-*.md"
+---
+
+# Architecture Decision Records (ADRs)
+
+Decisions must not live only in chat history or meeting notes. Whenever a qualifying decision is reached, **proactively offer to write an ADR**. Ask once; draft end-to-end if the user agrees.
+
+## When to offer an ADR
+
+Offer when **all three** criteria hold:
+
+1. **Reusable** — will guide future similar choices, not a one-off project setting or environment-specific configuration.
+2. **Architecturally significant** — touches a platform, integration pattern, identity/security baseline, data ownership model, canonical entity definition, vendor or product selection, application portfolio decision, or a cross-cutting principle.
+3. **Trade-offs were considered** — at least two real options were weighed; there was a decision to make, not just an implementation to do.
+
+**Skip ADRs for:** implementation details, tunable environment settings, low-stakes preferences, single-project tactical choices, and decisions that are trivially reversible.
+
+## Domain scope
+
+ADRs apply across all four TOGAF domains — not just Technology.
+
+| Domain | When an ADR is warranted | Default home |
+|--------|-------------------------|--------------|
+| **Technology (Phase D)** | Platform choice, integration technology, identity/security baseline, hosting model, runtime selection | `TechnologyArchitecture/` |
+| **Application (Phase C)** | Portfolio rationalisation decision (Tolerate / Invest / Eliminate), application consolidation approach, build vs buy for a capability | `ApplicationArchitecture/` |
+| **Data (Phase C)** | System of record assignment, canonical data model adoption, master data management approach, data ownership across systems | `DataArchitecture/` |
+| **Business (Phase B)** | Capability ownership, operating model decision, consolidation principle (e.g. "one system of record per capability"), sourcing model for a business function | `BusinessArchitecture/` |
+
+Paths are derived from `AGENTS.md`. If a domain-specific ADR directory is not defined there, default to the domain folder root.
+
+## Format
+
+**Filename:** `<DOMAIN_DIR>/ADR-NNNN-<kebab-slug>.md`
+Use the next free `NNNN` across all domains — the ADR counter is global, not per-domain.
+
+**Sections, in order:**
+
+```markdown
+# ADR-NNNN — <one-line statement of the decision>
+
+| Field | Value |
+|-------|-------|
+| **Status** | Proposed (Draft) |
+| **Date** | YYYY-MM-DD |
+| **Owner** | <role or name> |
+| **Domain** | <Business | Application | Data | Technology> |
+| **ADM phase** | <B | C-App | C-Data | D> |
+| **Scope** | <what this decision applies to — system, programme, platform> |
+| **Related** | <links to related ADRs, documents, principles> |
+| **Principles** | <P-NN (Name); P-NN (Name) — or "none" if genuinely none apply> |
+
+## Context
+
+<Why this decision is being made now. Working assumptions. Business driver or stakeholder concern that triggered it. What changes if this decision is not made.>
+
+## Options considered
+
+| Option | Effort | Change impact | Strategic upside | Notes |
+|--------|--------|---------------|-----------------|-------|
+| A — <name> | | | | |
+| B — <name> | | | | |
+| *(discarded)* — <name> | — | — | — | <why discarded> |
+
+## Decision
+
+**Chosen:** <Option X — one sentence stating the decision.>
+
+**Triggers for alternatives:** <conditions under which Option Y or Z would be preferred instead>
+
+## Decision criteria
+
+1. <Most important criterion — state it as a testable condition>
+2. <Second criterion>
+3. <…>
+
+## Consequences
+
+**Positive:** <what this enables or improves>
+
+**Accepted trade-offs:** <what is worse or harder as a result — be honest>
+
+## Operational guardrails
+
+<What must be true operationally for this decision to hold — SLA, monitoring, rotation, cost threshold, review trigger. Omit section if not applicable.>
+
+## Open items
+
+- <anything unresolved that would change the decision if answered differently>
+```
+
+## Behavioural rules
+
+- **Ask once:** when a chat is heading toward a qualifying decision, offer *"Capture this as ADR-NNNN?"* — do not repeat the offer.
+- **Draft end-to-end:** if the user says yes, write the complete ADR, not a stub. Populate every section; use *TBD* only for genuinely unknown information and put it under **Open items**.
+- **Populate Principles:** always check `principles.md` (path from `AGENTS.md`) for relevant P-NN IDs. If the file doesn't exist, note it as an open item. If the decision conflicts with a principle, name the conflict in **Context** or **Consequences** — do not silently omit it.
+- **Supersession:** if a decision supersedes an earlier ADR, set the old ADR's Status to `Superseded by ADR-MMMM (YYYY-MM-DD)` and add a `Related` link in both directions.
+- **Don't invent decisions:** if the user has not actually made a choice, list the ambiguity under **Open items**, not under **Decision**.
+- **Existing ADR edits:** when editing an existing ADR, preserve section order. Never silently change **Decision** or **Status** — surface the change to the user first.
+
+## Domain-specific triggers (quick reference)
+
+**Technology ADR — offer when:**
+- A new platform, cloud service, or runtime is being adopted
+- An integration pattern (API, event, batch, data virtualisation) is being standardised
+- An identity, security, or networking baseline is being established or changed
+- A vendor or product is being selected for a platform-level capability
+
+**Application ADR — offer when:**
+- An application is being classified as Invest / Migrate / Eliminate in a portfolio review
+- A build vs buy vs SaaS decision is being made for a business capability
+- An application consolidation target is being selected
+
+**Data ADR — offer when:**
+- A system of record is being assigned or changed for a canonical entity
+- A master data management approach is being chosen (hub / registry / coexistence)
+- A canonical data model is being adopted or a significant entity is being redefined
+- Data ownership is being reassigned across systems
+
+**Business ADR — offer when:**
+- A capability is being assigned to a single business owner
+- An operating model decision is being made that affects multiple teams
+- A consolidation principle is being established (e.g. "one contract management system")
+- A sourcing model for a business function is being decided (insource / outsource / shared service)

@@ -1,0 +1,116 @@
+---
+description: Architecture Board operating model — composition, decision rights, quorum, meeting format, escalation path, and output requirements. Governs how architecturally significant decisions are formally reviewed and ratified.
+alwaysApply: false
+globs: "process/ArchitectureBoardMeetings/**"
+---
+
+# Architecture Board Governance
+
+The Architecture Board is the governance body for architecturally significant decisions. Without explicit decision rights and escalation paths, the board becomes a review forum with no teeth — decisions stall or get made informally outside the process.
+
+This rule governs how the board operates and what it produces. It does not govern how board sessions are noted — see the `process-notes` skill for that.
+
+## Board composition
+
+A functional Architecture Board typically includes:
+
+| Role | Responsibility |
+|------|---------------|
+| **EA Lead / Chief Architect** (chair) | Sets agenda, holds the casting vote, accountable for architecture integrity |
+| **Domain architects** (Business, Application, Data, Technology) | Provide domain-level assessment; may be the same person in smaller organisations |
+| **Senior business stakeholder(s)** | Represent business capability ownership and strategic priorities; provide the "so what" check |
+| **Security lead** | Standing member for decisions with security or compliance implications |
+| **Delivery lead** (as needed) | For decisions with significant delivery impact |
+
+The board should be **small enough to decide** and **diverse enough to be credible**. More than 7 members typically produces committees, not decisions.
+
+Domain architects and stakeholders may be rotated or invited based on agenda — the core quorum is the EA Lead + at least one domain architect + at least one business stakeholder.
+
+## Decision rights
+
+Not everything needs the board. Routing decisions to the right level is itself governance.
+
+### Board approval required
+
+| Decision type | Why |
+|---------------|-----|
+| Re-architecting changes (new ADM cycle) | Scope and impact require full governance visibility |
+| New Architecture Building Blocks (ABBs) | Sets a precedent that constrains future SBB choices |
+| Changes to approved technology or integration baselines | Affects multiple teams and existing contracts |
+| Principle proposals (Proposed → Active) | Principles govern all future decisions |
+| Principle supersession | Removes an existing governance constraint |
+| ADRs with unresolved conflicts between architects | The board resolves disagreements |
+| Decisions that explicitly deviate from an Active principle | Deviation requires board-level acceptance |
+
+### Architect can decide (no board needed)
+
+| Decision type | Condition |
+|---------------|-----------|
+| Incremental changes within an approved architecture | Change is within the scope of an existing ADR or approved baseline |
+| ADRs that apply an existing principle without conflict | Principle is cited, no conflicts, decision is within an approved ABB |
+| Implementation-level choices | Technology version, configuration, tooling preference — not platform-level |
+| New SBB selection within an approved ABB | E.g. choosing a specific library within an approved runtime |
+
+If an architect is unsure whether board approval is needed: **default to bringing it to the board**. The cost of an unnecessary review is lower than the cost of an undocumented platform decision.
+
+### Escalation beyond the board
+
+| Situation | Escalation |
+|-----------|-----------|
+| Board cannot reach consensus | EA Lead + CTO / Head of Technology decide |
+| Decision has executive budget or contractual implications | Programme Steering Committee or equivalent |
+| Decision conflicts with regulatory or compliance requirements | Legal / Compliance function |
+| Strategic direction change implied | Executive / C-suite |
+
+## Quorum
+
+The board can make decisions when a quorum is present. Recommended minimum:
+- EA Lead (required — no proxy)
+- At least one domain architect
+- At least one business stakeholder
+
+Decisions made without quorum are advisory only and must be ratified at the next quorate session before being considered approved.
+
+## Meeting cadence
+
+**Regular sessions:** monthly or bi-weekly. Standing agenda includes:
+- ADR review queue (decisions submitted for approval)
+- Principle review items (Proposed → Active, or supersession requests)
+- Architecture change requests (Re-architecting triggers)
+- Open items from previous session
+- Roadmap and horizon review (quarterly)
+
+**Ad-hoc sessions:** for urgent decisions that cannot wait for the next regular session. Threshold: a delivery programme is blocked and the decision is architecturally significant. Ad-hoc sessions require quorum; outcomes are documented the same as regular sessions.
+
+**Annual principle review:** a dedicated session for reviewing all Active principles against the current context. Separate from regular sessions; longer format.
+
+## Meeting output requirements
+
+Every board session must produce a **decision log entry** — not just meeting notes. The decision log is the governance record; meeting notes are the context.
+
+For each item on the agenda, the outcome is one of:
+
+| Outcome | What it produces |
+|---------|-----------------|
+| **Approved** | ADR status updated to `Accepted`; principle status updated to `Active`; or change request approved. Decision log entry written. |
+| **Approved with conditions** | As above, plus named conditions and a review trigger date. Open items in the relevant ADR. |
+| **Deferred** | Named reason for deferral; named action required before re-submission; responsible owner; target date. |
+| **Rejected** | Rejection reason documented. If an ADR: status updated to `Rejected`; rationale in the ADR. The rejected option is preserved as a discarded option if a future ADR revisits the space. |
+| **Escalated** | Named escalation path, reason, and responsible owner. |
+
+A session that produces only discussion and no decision log entries has not functioned as a governance body.
+
+## Integration with ADRs and principles
+
+- Every board-approved ADR is updated with the board decision date and status `Accepted`.
+- Every board-approved principle is updated in `principles.md` with status `Active` and the approval date.
+- Board rejections and deferred items are tracked in `ea-practice/action-items.md` with `#NNN` references.
+- The `process-notes` skill handles formatting board session notes and producing artifact update suggestions.
+
+## What the board is not
+
+The board is not a **design authority** — it does not design solutions. Architects design; the board governs.
+
+The board is not a **bottleneck** — if the right decision classes are correctly routed to architects directly, the board's agenda should be manageable. If the board is reviewing every decision, the decision rights matrix needs recalibration.
+
+The board is not a **rubber stamp** — if every item is approved without discussion, the board is not adding governance value. Challenge and debate on significant decisions are signals of a healthy board.

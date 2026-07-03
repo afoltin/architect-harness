@@ -1,0 +1,64 @@
+---
+description: Guidance for Phase C (Applications) artifacts — ABB/SBB discipline, TIME/6R portfolio lens, integration pattern naming, fit-gap before product choice.
+alwaysApply: false
+globs: "ApplicationArchitecture/**"
+---
+
+# Application Architecture (ADM Phase C — Applications)
+
+You are working in **Phase C – Applications**. Contributions describe applications, their boundaries, interactions, lifecycle, and fit against business capabilities.
+
+## Anchor artifacts
+
+Read `AGENTS.md` for actual paths. Default locations:
+
+- `ApplicationArchitecture/ApplicationLandscapeMap.md` — canonical application inventory. Every new application reference belongs here (name, status, owner, capabilities served). If it doesn't exist, propose creating it.
+- `BusinessArchitecture/BusinessCapabilityMap.md` — applications must trace to one or more business capabilities. Inability to make this link is a finding worth naming.
+- `TechnologyArchitecture/IntegrationRoadmap.md` (or equivalent) — integration patterns and interface catalogue. Every integration named in Phase C should appear here.
+
+For **replacement** scenarios follow Scenario 1 in `ea-practice/togaf-decision-stages.md`.
+For **consolidation** scenarios follow Scenario 2.
+For **greenfield** scenarios follow Scenario 4.
+
+## What good looks like
+
+**ABB before SBB — always.**
+State the capability (ABB) before the product (SBB). "We need a contact centre capability with omnichannel routing and CRM integration" before "we will evaluate Talkdesk and Genesys". Never let a vendor name substitute for a capability description. A product evaluation without a stated ABB is incomplete.
+
+**Portfolio lens: TIME / 6R.**
+When evaluating the existing application estate:
+- **TIME:** Tolerate, Invest, Migrate, Eliminate
+- **6R:** Rehost, Replatform, Refactor, Repurchase, Retain, Retire
+
+Apply these consistently. A proposal to consolidate or replace without a TIME/6R classification for each affected application is not a portfolio decision — it is a project plan.
+
+**Fit-gap before product choice.**
+Every product comparison requires a stated fit-gap against the current ABB and against the outstanding business capability gaps from Phase B. "Product A scores better on dashboards" is not a fit-gap. A fit-gap states: for each required capability, what is the current state, what is the gap, and how does each option close it.
+
+**Integration is named, not implied.**
+Every cross-application interaction must name:
+1. The integration pattern (synchronous API, async event, batch/file, data virtualisation, database sharing)
+2. The data entity exchanged
+3. Which system is the system of record for that entity
+4. A reference to the integration catalogue entry
+
+"System A will talk to System B" is not an integration architecture.
+
+**Decommissioning is planned alongside delivery.**
+If an application is being replaced or consolidated, the decommissioning plan belongs in Phase C, not deferred to later. Name the decommission date, the migration scope, and the sunset criteria. Applications that are "replaced but not yet decommissioned" are not architecture wins.
+
+## Boundaries
+
+- Data semantics, canonical model, system of record → `DataArchitecture/`
+- Hosting, runtime, integration platform, security controls → `TechnologyArchitecture/`
+- Business capability ownership and operating model → `BusinessArchitecture/`
+
+Cross-link rather than duplicate.
+
+## ADR triggers in Phase C
+
+Offer an Application ADR (see `adr-and-decisions.mdc`) when:
+- An application is being classified as Invest, Migrate, or Eliminate in a formal portfolio review
+- A build vs buy vs SaaS decision is being made for a business capability
+- A consolidation target application is being selected from multiple candidates
+- An integration pattern is being standardised for a class of interactions

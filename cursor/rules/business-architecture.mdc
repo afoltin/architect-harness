@@ -1,0 +1,77 @@
+---
+description: Guidance for Phase B (Business) artifacts — capability-first framing, value streams, stakeholder concern traceability, operating model, and gap identification. Do not drift into application or technology design.
+alwaysApply: false
+globs: "BusinessArchitecture/**"
+---
+
+# Business Architecture (ADM Phase B — Business)
+
+You are working in **Phase B – Business**. This domain resolves capability ownership, operating model decisions, and stakeholder concerns. It is the heaviest phase in consolidation and greenfield scenarios — the political and organisational work lives here.
+
+## Anchor artifacts
+
+Read `AGENTS.md` for actual paths. Default locations:
+
+- `BusinessArchitecture/BusinessCapabilityMap.md` — the authoritative capability inventory. Reuse names; if a new capability is needed, propose adding it here rather than inventing it inline.
+- `BusinessArchitecture/Organization/StakeholderMap.md` — named stakeholders, their roles, concerns, and decision rights. Update it when new stakeholders surface.
+- `ea-practice/action-items.md` — outstanding commitments. Reference by `#NNN`.
+- `principles.md` — cite by P-NN when a capability or operating model decision rests on or conflicts with a principle.
+
+If these files don't exist in your repo, propose creating them rather than working without them.
+
+## What good looks like
+
+**Capability-first language.**
+Talk in business capabilities (`Order Management`, `Field Service Dispatching`, `Customer Identity`), not in application or product names. Capabilities are stable across technology cycles; products change. If you catch yourself writing a vendor name in Phase B, stop — that belongs in Phase C or D.
+
+**Value streams are explicit.**
+For any cross-functional flow, name: trigger → stages → outcome → stakeholders involved at each stage. Don't stay inside functional silos. Hand-offs between capabilities are where problems hide.
+
+**Stakeholder concerns are named and traced.**
+For every significant proposal, state:
+- *Who* the stakeholder is (name or role)
+- *What their concern is* (specific, not generic — "data sovereignty for customer records in region X", not "security")
+- *How the proposal addresses or accepts the trade-off*
+
+A proposal that ignores a known stakeholder concern is incomplete, not ready for Phase C.
+
+**Capability gaps are findings, not implications.**
+Every gap between Baseline and Target capability must be named, not vague. A gap statement has three parts: (1) what capability is missing or insufficient, (2) what the impact is if it stays that way, (3) which Phase C/D work is needed to close it.
+
+**Operating model touchpoints are noted.**
+When a capability decision affects organisational structure, roles, location, or sourcing model, call it out. These are rarely purely technical — they require change management, not just delivery.
+
+**Overlap is resolved here, not deferred.**
+In consolidation scenarios, capability overlap between applications or teams must be resolved in Phase B before Phase C starts. "We'll figure it out in implementation" is a scope-creep risk. Name the overlapping capabilities, name the resolution decision, and consider whether it warrants a Business ADR.
+
+## Stakeholder concern traceability pattern
+
+When producing a Phase B artifact that will feed Phase C/D decisions, include a traceability table:
+
+```markdown
+## Stakeholder concerns addressed
+
+| Stakeholder | Concern | How addressed | Trade-off accepted |
+|-------------|---------|---------------|--------------------|
+| <Role> | <Specific concern> | <How the architecture responds> | <What is not addressed and why> |
+```
+
+This table makes the review conversation concrete. Stakeholders can confirm or correct their concern being accurately represented.
+
+## Boundaries
+
+Phase B stops at the capability and process boundary.
+
+- Application choices and portfolio rationalisation → `ApplicationArchitecture/`
+- Data semantics, mastering, ownership → `DataArchitecture/`
+- Platform, hosting, integration technology → `TechnologyArchitecture/`
+
+If the discussion drifts into product names, vendor evaluations, or hosting decisions, flag the handoff explicitly rather than embedding it in Phase B artifacts.
+
+## ADR triggers in Phase B
+
+Offer a Business ADR (see `adr-and-decisions.mdc`) when:
+- A capability is being assigned a single owner for the first time
+- A consolidation principle is being established that will constrain Phase C choices
+- An operating model decision is being made that affects multiple teams or business units
+- A sourcing model (insource / outsource / shared service) is being decided for a business function
