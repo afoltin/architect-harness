@@ -79,6 +79,31 @@ The kit is generic by design. Five steps make it operational for your context:
 4. **Verify the Cursor globs** — check that the folder names in `.cursor/rules/*.mdc` frontmatter match your actual structure.
 5. **Create `Glossary.md`** — even 5–10 terms prevents the agent inventing synonyms.
 
+### Tools to install
+
+Most skills only read and write Markdown files and need no extra tools. Two skills need command line tools. Install them yourself with [Homebrew](https://brew.sh) on macOS. The agent never installs tools; it asks you before it runs them.
+
+| Tool | Install | Needed by | What it does |
+|------|---------|-----------|--------------|
+| Structurizr | `brew install structurizr` | `c4-diagrams` | Reads your Structurizr DSL and exports one PlantUML file per view |
+| PlantUML | `brew install plantuml` | `c4-diagrams` | Draws the diagrams as PNG or SVG. Also installs Graphviz (layout) and OpenJDK (Java) |
+| Python 3 | already on macOS (Xcode Command Line Tools), or `brew install python` | `c4-diagrams` | Prepares the diagrams for documents (title, key, resolution) |
+| Git | already on macOS (Xcode Command Line Tools), or `brew install git` | `journal-entry`, commit offers in other skills | Reads the day's commits; the EA repo must be a git repository |
+
+Install all at once:
+
+```bash
+brew install structurizr plantuml
+```
+
+Check the install:
+
+```bash
+structurizr version && plantuml -version && python3 --version && git --version
+```
+
+On an Intel Mac, Homebrew may build `structurizr` from source. This takes longer but works the same.
+
 See `CUSTOMISE.md` for the full guide, including optional steps for org-specific rules and skills.
 
 ---

@@ -109,6 +109,7 @@ Active workflows for Claude are in `skills/`:
 | `rfp-qualifier` | Phase 0 — Bid/No-Bid scoring, requirements triage, Open Questions Log |
 | `rfp-discovery-to-design` | Phases 1–2 — Client Context Brief, NFR Catalogue, Architecture Intent, SAD, Fit/Gap |
 | `rfp-assembler` | Phases 3–4 — Risk Register, Compliance Matrix, Executive Summary, Assumptions & Exclusions |
+| `c4-diagrams` | Render C4 diagrams (Context, Container, Component) from Structurizr DSL to PNG/SVG for Claude Docs, PDF and Word |
 
 ---
 
