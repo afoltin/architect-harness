@@ -31,6 +31,7 @@ Update this table to match your actual folder names. All skills and rules read t
 | `process/ArchitectureBoardMeetings/` | Architecture Board session notes |
 | `transformation/` | Cross-cutting transformation programmes |
 | `pursuits/` | RFP presales pursuits — one subfolder per engagement (`<client>-<slug>/`) |
+| `assignments/` | Job interview architecture assignments — one subfolder per assignment (`<company>-<slug>/`) |
 | `Glossary.md` | Authoritative terms — extend it; do not invent synonyms |
 | `principles.md` | Active architecture principles — cite by P-NN ID |
 | `ea-practice/action-items.md` | Master action-items list — cite by #NNN |
@@ -55,6 +56,8 @@ When creating or substantially editing an architecture artifact (anything in the
 ```
 
 Do not add this header to `journal/` entries — the journal has its own format.
+
+Do not add this header to `assignments/` either. Interview assignments use plain words without TOGAF ceremony (see the `assignment-*` skills).
 
 ---
 
@@ -109,6 +112,10 @@ Active workflows for Claude are in `skills/`:
 | `rfp-qualifier` | Phase 0 — Bid/No-Bid scoring, requirements triage, Open Questions Log |
 | `rfp-discovery-to-design` | Phases 1–2 — Client Context Brief, NFR Catalogue, Architecture Intent, SAD, Fit/Gap |
 | `rfp-assembler` | Phases 3–4 — Risk Register, Compliance Matrix, Executive Summary, Assumptions & Exclusions |
+| `assignment-intake` | Interview assignment step 1 — set-up questions, brief analysis, scope contract, assumptions, time plan |
+| `assignment-design` | Interview assignment step 2 — requirements, 3–5 short decision records, C4 diagrams, security, migration, risks, red-team pass |
+| `assignment-deliverable` | Interview assignment step 3 — document (PDF/Word) and optional slides, sized for the reader, final check |
+| `assignment-defence` | Interview assignment step 4 — talk plan, question bank, weak points, interactive mock panel |
 | `c4-diagrams` | Render C4 diagrams (Context, Container, Component) from Structurizr DSL to PNG/SVG for Claude Docs, PDF and Word |
 
 ---
